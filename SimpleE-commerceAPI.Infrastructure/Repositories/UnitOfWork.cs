@@ -7,10 +7,13 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
     {
         // inject Db Context
         private readonly ApplicationDbContext _db;
+        public IRoleRepository Role {  get; private set; }
+
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
+            Role = new RoleRepository(db);
         }
 
         public void Save()
