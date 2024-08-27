@@ -1,4 +1,4 @@
-﻿namespace SimpleE_commerceAPI.Application.Services.Interfaces
+﻿namespace SimpleE_commerceAPI.Application.Common.Interfaces
 {
     public interface IDbInitializer
     {

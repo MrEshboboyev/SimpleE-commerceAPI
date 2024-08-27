@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimpleE_commerceAPI.Application.Common.Interfaces;
 using SimpleE_commerceAPI.Application.Services.Interfaces;
 using SimpleE_commerceAPI.Domain.Entities;
 using SimpleE_commerceAPI.Infrastructure.Data;
