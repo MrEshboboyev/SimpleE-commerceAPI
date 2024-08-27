@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleE-commerceAPI.Domain\SimpleE-commerceAPI.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
