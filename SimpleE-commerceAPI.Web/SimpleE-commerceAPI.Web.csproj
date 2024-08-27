@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SimpleE-commerceAPI.Domain\SimpleE-commerceAPI.Domain.csproj" />
     <ProjectReference Include="..\SimpleE-commerceAPI.Infrastructure\SimpleE-commerceAPI.Infrastructure.csproj" />
   </ItemGroup>
