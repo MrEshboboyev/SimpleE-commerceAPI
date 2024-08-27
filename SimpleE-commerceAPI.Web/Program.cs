@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SimpleE_commerceAPI.Application.Services.Interfaces;
 using SimpleE_commerceAPI.Domain.Entities;
 using SimpleE_commerceAPI.Infrastructure.Data;
+using SimpleE_commerceAPI.Infrastructure.Implementations;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +80,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// services lifetime 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 var app = builder.Build();
 
@@ -92,6 +98,16 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+SeedDatabase();
 app.MapControllers();
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}

@@ -36,8 +36,8 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                 // is Admin role is not exist, created roles (Customer and Admin)
                 if (!_roleManager.RoleExistsAsync(SD.Role_Admin).GetAwaiter().GetResult())
                 {
-                    _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
-                    _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
+                    _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).Wait();
+                    _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).Wait();
 
                     // create admin user
                     _userManager.CreateAsync(new ApplicationUser
