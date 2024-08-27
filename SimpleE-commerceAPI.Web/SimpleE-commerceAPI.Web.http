@@ -1,0 +1,6 @@
+@SimpleE_commerceAPI.Web_HostAddress = http://localhost:5073
+
+GET {{SimpleE_commerceAPI.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
