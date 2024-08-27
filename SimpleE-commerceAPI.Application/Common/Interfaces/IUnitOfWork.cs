@@ -2,6 +2,8 @@
 {
     public interface IUnitOfWork
     {
+        IRoleRepository Role { get; }
+        IApplicationUserRepository ApplicationUser { get; }
         void Save();
     }
 }

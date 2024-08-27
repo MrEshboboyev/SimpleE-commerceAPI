@@ -9,6 +9,6 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
         IdentityRole GetRoleByName(string roleName);
         void CreateRole(IdentityRole identityRole);
         void UpdateRole(IdentityRole identityRole);
-        void DeleteRole(string roleId);
+        bool DeleteRole(string roleId);
     }
 }
