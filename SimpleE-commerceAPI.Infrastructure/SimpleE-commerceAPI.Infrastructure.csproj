@@ -8,10 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SimpleE-commerceAPI.Application\SimpleE-commerceAPI.Application.csproj" />
     <ProjectReference Include="..\SimpleE-commerceAPI.Domain\SimpleE-commerceAPI.Domain.csproj" />
   </ItemGroup>
 

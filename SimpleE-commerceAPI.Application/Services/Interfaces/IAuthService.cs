@@ -7,6 +7,6 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
     {
         Task<string> LoginAsync(LoginModel loginModel);
         Task<string> RegisterAsync(RegisterModel registerModel);
-        Task<string> GenerateJwtToken(ApplicationUser user, IEnumerable<string> roles);
+        string GenerateJwtToken(ApplicationUser user, IEnumerable<string> roles);
     }
 }
