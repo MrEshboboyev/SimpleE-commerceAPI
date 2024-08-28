@@ -5,10 +5,10 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
 {
     public interface IProductService
     {
-        IEnumerable<Product> GetAllProductsAsync();
-        Product GetProductByIdAsync(int productId);
-        Product CreateProductAsync(CreateProductModel model);
-        bool UpdateProductAsync(UpdateProductModel model);
-        bool DeleteProductAsync(int productId);
+        IEnumerable<Product> GetAllProducts();
+        Product GetProductById(int productId);
+        Product CreateProduct(CreateProductModel model);
+        Product UpdateProduct(UpdateProductModel model);
+        bool DeleteProduct(int productId);
     }
 }
