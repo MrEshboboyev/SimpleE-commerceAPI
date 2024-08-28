@@ -2,7 +2,7 @@
 
 namespace SimpleE_commerceAPI.Application.Common.Interfaces
 {
-    public interface IShoppingRepository : IRepository<ShoppingCart>
+    public interface IShoppingCartRepository : IRepository<ShoppingCart>
     {
         void Update(ShoppingCart cart);
     }
