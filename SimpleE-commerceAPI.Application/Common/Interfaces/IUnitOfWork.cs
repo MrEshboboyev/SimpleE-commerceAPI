@@ -4,6 +4,7 @@
     {
         IRoleRepository Role { get; }
         IApplicationUserRepository ApplicationUser { get; }
+        IProductRepository Product { get; }
         void Save();
     }
 }
