@@ -8,6 +8,7 @@ using SimpleE_commerceAPI.Application.Services.Interfaces;
 using SimpleE_commerceAPI.Domain.Entities;
 using SimpleE_commerceAPI.Infrastructure.Data;
 using SimpleE_commerceAPI.Infrastructure.Implementations;
+using SimpleE_commerceAPI.Infrastructure.Repositories;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,6 +85,8 @@ builder.Services.AddAuthentication(options =>
 // services lifetime 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IApplicationUserService, ApplicationUserService>();
 
 
 var app = builder.Build();

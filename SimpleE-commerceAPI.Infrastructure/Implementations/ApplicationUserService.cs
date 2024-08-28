@@ -1,4 +1,6 @@
-﻿using SimpleE_commerceAPI.Application.Common.Interfaces;
+﻿using Microsoft.AspNetCore.Identity;
+using SimpleE_commerceAPI.Application.Common.Interfaces;
+using SimpleE_commerceAPI.Application.Common.Models;
 using SimpleE_commerceAPI.Application.Services.Interfaces;
 using SimpleE_commerceAPI.Domain.Entities;
 
@@ -8,16 +10,45 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
     {
         // inject IUnitOfWork
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ApplicationUserService(IUnitOfWork unitOfWork)
+        public ApplicationUserService(IUnitOfWork unitOfWork,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public void CreateUser(ApplicationUser applicationUser)
+        public bool CreateUser(RegisterModel model)
         {
-            _unitOfWork.ApplicationUser.Add(applicationUser);
-            _unitOfWork.Save();
+            try
+            {
+                if (_unitOfWork.ApplicationUser.Any(u => u.Email == model.Email))
+                {
+                    return false;
+                }
+                var applicationUser = new ApplicationUser
+                {
+                    Email = model.Email,
+                    FullName = model.FullName,
+                    NormalizedEmail = model.Email.ToUpper(),
+                    UserName = model.Email
+                };
+                if (_roleManager.RoleExistsAsync(model.RoleName).GetAwaiter().GetResult())
+                {
+                    _userManager.AddToRoleAsync(applicationUser, model.RoleName);
+                }
+                _unitOfWork.ApplicationUser.Add(applicationUser);
+                _unitOfWork.Save();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool DeleteUser(string userId)
@@ -25,11 +56,8 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             try
             {
                 ApplicationUser? objFromDb = _unitOfWork.ApplicationUser.Get(r => r.Id == userId);
-                if (objFromDb != null)
-                {
-                    _unitOfWork.ApplicationUser.Remove(objFromDb);
-                    _unitOfWork.Save();
-                }
+                _unitOfWork.ApplicationUser.Remove(objFromDb);
+                _unitOfWork.Save();
                 return true;
             }
             catch (Exception)
@@ -53,10 +81,38 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             return _unitOfWork.ApplicationUser.Get(r => r.Email == email);
         }
 
-        public void UpdateUser(ApplicationUser applicationUser)
+        public bool UpdateUser(UpdateUserModel model)
         {
-            _unitOfWork.ApplicationUser.Update(applicationUser);
-            _unitOfWork.Save();
+            try
+            {
+                var user = _unitOfWork.ApplicationUser.Get(u => u.Id == model.UserId);
+                user.FullName = model.FullName;
+                user.Email = model.Email;
+                if (!_roleManager.RoleExistsAsync(model.RoleName).GetAwaiter().GetResult())
+                {
+                    _userManager.AddToRoleAsync(user, model.RoleName);
+                }
+                _unitOfWork.ApplicationUser.Update(user);
+                _unitOfWork.Save();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<IList<string>> GetUserRolesAsync(string email)
+        {
+            try
+            {
+                var user = _unitOfWork.ApplicationUser.Get(u => u.Email == email);
+                return await _userManager.GetRolesAsync(user);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }

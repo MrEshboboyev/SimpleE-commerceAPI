@@ -1,4 +1,5 @@
-﻿using SimpleE_commerceAPI.Domain.Entities;
+﻿using SimpleE_commerceAPI.Application.Common.Models;
+using SimpleE_commerceAPI.Domain.Entities;
 
 namespace SimpleE_commerceAPI.Application.Services.Interfaces
 {
@@ -7,8 +8,9 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
         IEnumerable<ApplicationUser> GetAllUsers();
         ApplicationUser GetUserById(string userId);
         ApplicationUser GetUserByEmail(string email);
-        void CreateUser(ApplicationUser applicationUser);
-        void UpdateUser(ApplicationUser applicationUser);
+        Task<IList<string>> GetUserRolesAsync(string email);
+        bool CreateUser(RegisterModel model);
+        bool UpdateUser(UpdateUserModel model);
         bool DeleteUser(string userId);
     }
 }
