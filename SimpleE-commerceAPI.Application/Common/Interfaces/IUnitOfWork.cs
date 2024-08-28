@@ -6,6 +6,7 @@
         IApplicationUserRepository ApplicationUser { get; }
         IProductRepository Product { get; }
         IShoppingCartRepository Cart { get; }
+        IShoppingCartItemRepository CartItem { get; }
         void Save();
     }
 }

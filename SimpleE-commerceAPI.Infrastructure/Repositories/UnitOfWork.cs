@@ -11,6 +11,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
         public IApplicationUserRepository ApplicationUser {  get; private set; }
         public IProductRepository Product {  get; private set; }
         public IShoppingCartRepository Cart { get; private set; }
+        public IShoppingCartItemRepository CartItem { get; private set; }
 
 
         public UnitOfWork(ApplicationDbContext db)
