@@ -5,17 +5,20 @@ using SimpleE_commerceAPI.Application.Services.Interfaces;
 
 namespace SimpleE_commerceAPI.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AdministrationController : ControllerBase
     {
-        // inject Application User
+        // inject Application User, Role Service
         private readonly IApplicationUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public AdministrationController(IApplicationUserService userService)
+        public AdministrationController(IApplicationUserService userService, 
+            IRoleService roleService)
         {
             _userService = userService;
+            _roleService = roleService;
         }
 
         #region User
@@ -84,6 +87,76 @@ namespace SimpleE_commerceAPI.Web.Controllers
             if (result is not null)
                 return Ok(result);
             else 
+                return NotFound();
+        }
+        #endregion
+
+        #region Role
+        [HttpGet("get-all-roles")]
+        public async Task<IActionResult> GetAllRoles()
+        {
+            return Ok(_roleService.GetAllRoles());
+        }
+
+        [HttpGet("get-role-by-name")]
+        public async Task<IActionResult> GetRoleByName(string roleName)
+        {
+            return Ok(_roleService.GetRoleByName(roleName));
+        }
+
+        [HttpGet("get-role-by-id")]
+        public async Task<IActionResult> GetRoleById(string roleId)
+        {
+            return Ok(_roleService.GetRoleById(roleId));
+        }
+
+        [HttpPost("create-role")]
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = _roleService.CreateRole(model);
+            if (result)
+                return Ok("Create role : success!");
+            else
+                return BadRequest("Create role : failed!");
+        }
+
+        [HttpPut("update-role")]
+        public async Task<IActionResult> UpdateRole(string roleId, [FromBody] UpdateRoleModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (roleId != model.RoleId)
+                return BadRequest("RoleId and model.RoleId must be equal!");
+
+            var result = _roleService.UpdateRole(model);
+            if (result)
+                return Ok("Update role : success!");
+            else
+                return BadRequest("Update role : failed!");
+        }
+
+        [HttpDelete("remove-role")]
+        public async Task<IActionResult> RemoveRole(string roleId)
+        {
+            var result = _roleService.DeleteRole(roleId);
+            if (result)
+            {
+                return Ok("Role Successfully deleted!");
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("get-role-users")]
+        public async Task<IActionResult> GetRoleUsers(string roleName)
+        {
+            var result = await _roleService.GetRoleUsersAsync(roleName);
+            if (result is not null)
+                return Ok(result);
+            else
                 return NotFound();
         }
         #endregion

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SimpleE_commerceAPI.Application.Common.Models;
 
 namespace SimpleE_commerceAPI.Application.Services.Interfaces
 {
@@ -7,8 +8,9 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
         IEnumerable<IdentityRole> GetAllRoles();
         IdentityRole GetRoleById(string roleId);
         IdentityRole GetRoleByName(string roleName);
-        void CreateRole(IdentityRole identityRole);
-        void UpdateRole(IdentityRole identityRole);
+        Task<IList<string>> GetRoleUsersAsync(string roleName);
+        bool CreateRole(CreateRoleModel model);
+        bool UpdateRole(UpdateRoleModel model);
         bool DeleteRole(string roleId);
     }
 }
