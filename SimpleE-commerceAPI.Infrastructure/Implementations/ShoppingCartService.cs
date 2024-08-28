@@ -15,6 +15,13 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             _unitOfWork = unitOfWork;
         }
 
+        #region Private Methods
+        private decimal CalculatePrice(int quantity, int productId)
+        {
+            return quantity * _unitOfWork.Product.Get(p => p.ProductId == productId).Price;
+        }
+        #endregion
+
         public async Task<ShoppingCartItem> AddItemToCartAsync(string userId, CreateCartItemModel model)
         {
             try
@@ -36,6 +43,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                 if (existingItem is not null)
                 {
                     existingItem.Quantity += model.Quantity;
+                    existingItem.Price = CalculatePrice(model.Quantity, model.ProductId);
                     _unitOfWork.CartItem.Update(existingItem);
                     _unitOfWork.Save();
                     return existingItem;
@@ -46,7 +54,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                     {
                         ShoppingCartId = cart.ShoppingCartId,
                         Quantity = model.Quantity,
-                        Price = model.Price,
+                        Price = CalculatePrice(model.Quantity, model.ProductId),
                         ProductId = model.ProductId
                     };
                     _unitOfWork.CartItem.Add(cartItem);
@@ -65,6 +73,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             if (!_unitOfWork.Cart.Any(c => c.UserId == userId))
             {
                 _unitOfWork.Cart.Add(new ShoppingCart { UserId = userId });
+                _unitOfWork.Save();
             }
 
             return _unitOfWork.Cart.Get(c => c.UserId == userId, 
@@ -106,9 +115,8 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                     item.ShoppingCartItemId == model.ShoppingCartItemId);
 
                 // update cartItem
-                cartItemFromDb.ProductId = model.ProductId;
-                cartItemFromDb.Price = model.Price;
                 cartItemFromDb.Quantity = model.Quantity;
+                cartItemFromDb.Price = CalculatePrice(model.Quantity, cartItemFromDb.ProductId);
 
                 _unitOfWork.CartItem.Update(cartItemFromDb);
                 _unitOfWork.Save();

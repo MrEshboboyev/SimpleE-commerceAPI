@@ -21,6 +21,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
             ApplicationUser = new ApplicationUserRepository(db);
             Product = new ProductRepository(db);
             Cart = new ShoppingCartRepository(db);
+            CartItem = new ShoppingCartItemRepository(db);
         }
 
         public void Save()
