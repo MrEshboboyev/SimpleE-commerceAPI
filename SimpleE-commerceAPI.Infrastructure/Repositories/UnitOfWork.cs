@@ -10,6 +10,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
         public IRoleRepository Role {  get; private set; }
         public IApplicationUserRepository ApplicationUser {  get; private set; }
         public IProductRepository Product {  get; private set; }
+        public IShoppingCartRepository Cart { get; private set; }
 
 
         public UnitOfWork(ApplicationDbContext db)
@@ -18,6 +19,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
             Role = new RoleRepository(db);
             ApplicationUser = new ApplicationUserRepository(db);
             Product = new ProductRepository(db);
+            Cart = new ShoppingCartRepository(db);
         }
 
         public void Save()
