@@ -46,7 +46,7 @@ namespace SimpleE_commerceAPI.Web.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = _userService.CreateUser(model);
+            var result = await _userService.CreateUserAsync(model);
             if (result)
                 return Ok("Create user : success!");
             else

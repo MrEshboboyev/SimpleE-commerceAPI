@@ -9,7 +9,7 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
         ApplicationUser GetUserById(string userId);
         ApplicationUser GetUserByEmail(string email);
         Task<IList<string>> GetUserRolesAsync(string email);
-        bool CreateUser(RegisterModel model);
+        Task<bool> CreateUserAsync(RegisterModel model);
         bool UpdateUser(UpdateUserModel model);
         bool DeleteUser(string userId);
     }

@@ -22,7 +22,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             _roleManager = roleManager;
         }
 
-        public bool CreateUser(RegisterModel model)
+        public async Task<bool> CreateUserAsync(RegisterModel model)
         {
             try
             {
@@ -39,9 +39,9 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                 };
                 if (_roleManager.RoleExistsAsync(model.RoleName).GetAwaiter().GetResult())
                 {
-                    _userManager.AddToRoleAsync(applicationUser, model.RoleName);
+                    await _userManager.CreateAsync(applicationUser, model.Password);
+                    await _userManager.AddToRoleAsync(applicationUser, model.RoleName);
                 }
-                _unitOfWork.ApplicationUser.Add(applicationUser);
                 _unitOfWork.Save();
                 return true;
             }
