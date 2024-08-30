@@ -20,6 +20,22 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
         {
             return quantity * _unitOfWork.Product.Get(p => p.ProductId == productId).Price;
         }
+        
+        private bool CalculateTotalAmount(int shoppingCartId)
+        {
+            try
+            {
+                var cartFromDb = _unitOfWork.Cart.Get(c => c.ShoppingCartId == shoppingCartId);
+                cartFromDb.TotalAmount = _unitOfWork.CartItem.GetAll(item => item.ShoppingCartId == shoppingCartId).Sum(item => item.Price);
+                _unitOfWork.Cart.Update(cartFromDb);
+                _unitOfWork.Save();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
         #endregion
 
         public async Task<ShoppingCartItem> AddItemToCartAsync(string userId, CreateCartItemModel model)
@@ -75,6 +91,13 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                 _unitOfWork.Cart.Add(new ShoppingCart { UserId = userId });
                 _unitOfWork.Save();
             }
+
+            var cartFromDb = _unitOfWork.Cart.Get(c => c.UserId == userId);
+
+            // prepare total amount and save
+            var result = CalculateTotalAmount(cartFromDb.ShoppingCartId);
+            if (!result)
+                return null;
 
             return _unitOfWork.Cart.Get(c => c.UserId == userId, 
                 includeProperties: "ShoppingCartItems");

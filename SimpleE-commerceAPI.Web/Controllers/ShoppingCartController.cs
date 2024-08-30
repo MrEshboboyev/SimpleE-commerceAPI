@@ -30,7 +30,11 @@ namespace SimpleE_commerceAPI.Web.Controllers
         [HttpGet("get-cart")]
         public async Task<IActionResult> GetCartAsync()
         {
-            return Ok(await _cartService.GetCartAsync(GetUserId()));
+            var result = await _cartService.GetCartAsync(GetUserId());
+            if (result is null)
+                return NotFound();
+
+            return Ok(result);
         }
 
         [HttpPost("add-item-to-cart")]
