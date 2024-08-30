@@ -59,7 +59,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                 if (existingItem is not null)
                 {
                     existingItem.Quantity += model.Quantity;
-                    existingItem.Price = CalculatePrice(model.Quantity, model.ProductId);
+                    existingItem.Price = CalculatePrice(existingItem.Quantity, existingItem.ProductId);
                     _unitOfWork.CartItem.Update(existingItem);
                     _unitOfWork.Save();
                     return existingItem;
