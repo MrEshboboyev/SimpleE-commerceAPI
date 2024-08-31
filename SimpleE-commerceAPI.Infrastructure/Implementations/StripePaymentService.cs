@@ -7,6 +7,24 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
 {
     public class StripePaymentService : IPaymentService
     {
+        public async Task<string> CreatePaymentTokenAsync(CreateTokenModel model)
+        {
+            var options = new TokenCreateOptions
+            {
+                Card = new TokenCardOptions
+                {
+                    Number = model.CardNumber,                    
+                    ExpMonth = model.ExpMonth,
+                    ExpYear = model.ExpYear,
+                    Cvc = model.Cvc,
+                },
+            };
+
+            var service = new TokenService();
+            Token token = await service.CreateAsync(options);
+            return token.Id;
+        }
+
         public async Task<PaymentResult> ProcessPaymentAsync(PaymentRequest paymentRequest)
         {
             var options = new ChargeCreateOptions

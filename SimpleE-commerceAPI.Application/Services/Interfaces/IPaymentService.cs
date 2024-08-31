@@ -5,5 +5,6 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
     public interface IPaymentService
     {
         Task<PaymentResult> ProcessPaymentAsync(PaymentRequest paymentRequest);
+        Task<string> CreatePaymentTokenAsync(CreateTokenModel model);
     }
 }
