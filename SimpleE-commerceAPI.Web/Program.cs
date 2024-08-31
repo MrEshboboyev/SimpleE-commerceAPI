@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SimpleE_commerceAPI.Application.Common.Interfaces;
+using SimpleE_commerceAPI.Application.Common.Models;
 using SimpleE_commerceAPI.Application.Services.Interfaces;
 using SimpleE_commerceAPI.Domain.Entities;
 using SimpleE_commerceAPI.Infrastructure.Data;
@@ -81,6 +82,10 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = audience
     };
 });
+
+// configure Stripe
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+Stripe.StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 // services lifetime 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
