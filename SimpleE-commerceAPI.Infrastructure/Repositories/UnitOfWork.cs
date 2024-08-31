@@ -16,6 +16,8 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
         public IProductRepository Product {  get; private set; }
         public IShoppingCartRepository Cart { get; private set; }
         public IShoppingCartItemRepository CartItem { get; private set; }
+        public IPaymentRepository Payment { get; private set; }
+        public IOrderRepository Order { get; private set; }
 
 
         public UnitOfWork(ApplicationDbContext db)
@@ -26,6 +28,8 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
             Product = new ProductRepository(db);
             Cart = new ShoppingCartRepository(db);
             CartItem = new ShoppingCartItemRepository(db);
+            Payment = new PaymentRepository(db);
+            Order = new OrderRepository(db);
         }
 
         public void Save()
