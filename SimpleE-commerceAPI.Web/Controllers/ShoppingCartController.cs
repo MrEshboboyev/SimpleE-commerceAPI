@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleE_commerceAPI.Application.Common.Models;
 using SimpleE_commerceAPI.Application.Services.Interfaces;

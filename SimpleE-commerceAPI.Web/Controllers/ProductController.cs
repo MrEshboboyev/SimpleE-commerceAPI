@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleE_commerceAPI.Application.Common.Models;
 using SimpleE_commerceAPI.Application.Services.Interfaces;
 
 namespace SimpleE_commerceAPI.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase

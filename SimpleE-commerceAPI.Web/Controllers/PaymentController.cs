@@ -5,6 +5,7 @@ using SimpleE_commerceAPI.Application.Services.Interfaces;
 
 namespace SimpleE_commerceAPI.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class PaymentController : ControllerBase
