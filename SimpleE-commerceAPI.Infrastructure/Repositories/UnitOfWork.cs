@@ -1,12 +1,16 @@
-﻿using SimpleE_commerceAPI.Application.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using SimpleE_commerceAPI.Application.Common.Interfaces;
 using SimpleE_commerceAPI.Infrastructure.Data;
 
 namespace SimpleE_commerceAPI.Infrastructure.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
-        // inject Db Context
+        // inject Db Context, IDbContextTransaction
         private readonly ApplicationDbContext _db;
+        private IDbContextTransaction _transaction;
+
         public IRoleRepository Role {  get; private set; }
         public IApplicationUserRepository ApplicationUser {  get; private set; }
         public IProductRepository Product {  get; private set; }
@@ -27,6 +31,41 @@ namespace SimpleE_commerceAPI.Infrastructure.Repositories
         public void Save()
         {
             _db.SaveChanges();
+        }
+
+        public async Task BeginTransactionAsync()
+        {
+            _transaction = await _db.Database.BeginTransactionAsync();
+        }
+
+        public async Task CommitTransactionAsync()
+        {
+            try
+            {
+                await _db.SaveChangesAsync();
+                await _transaction.CommitAsync();
+            }
+            catch
+            {
+                await RollbackTransactionAsync();
+                throw;
+            }
+        }
+
+        public async Task RollbackTransactionAsync()
+        {
+            await _transaction.RollbackAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _transaction?.Dispose();
+            _db.Dispose();
         }
     }
 }
