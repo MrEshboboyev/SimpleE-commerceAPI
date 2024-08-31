@@ -11,10 +11,10 @@ namespace SimpleE_commerceAPI.Application.Services.Interfaces
         // only admins
         Task<IEnumerable<Payment>> GetAllPaymentsAsync();
         Task<IEnumerable<Payment>> GetUserPaymentsAsync(string userId);
-        Task<IEnumerable<Payment>> GetPaymentByMethodAsync(string paymentMethod);
+        Task<IEnumerable<Payment>> GetPaymentsByMethodAsync(string paymentMethod);
         Task<Payment> GetPaymentByIdAsync(int paymentId);
-        Task<bool> CreatePaymentAsync(CreatePaymentModel model);
-        Task<bool> UpdatePaymentAsync(UpdatePaymentModel model);
+        Task<Payment> CreatePaymentAsync(CreatePaymentModel model);
+        Task<Payment> UpdatePaymentAsync(UpdatePaymentModel model);
         Task<bool> RemovePaymentAsync(int paymentId);
     }
 }

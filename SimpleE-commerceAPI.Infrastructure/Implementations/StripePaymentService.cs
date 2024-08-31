@@ -56,7 +56,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
         }
 
         // only Admins
-        public async Task<bool> CreatePaymentAsync(CreatePaymentModel model)
+        public async Task<Payment> CreatePaymentAsync(CreatePaymentModel model)
         {
             try
             {
@@ -71,11 +71,11 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
 
                 _unitOfWork.Payment.Add(payment);
                 _unitOfWork.Save();
-                return true;
+                return payment;
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
         }
 
@@ -91,7 +91,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
                 includeProperties: "Order");
         }
 
-        public async Task<IEnumerable<Payment>> GetPaymentByMethodAsync(string paymentMethod)
+        public async Task<IEnumerable<Payment>> GetPaymentsByMethodAsync(string paymentMethod)
         {
             return _unitOfWork.Payment.GetAll(p => p.PaymentMethod == paymentMethod,
                 includeProperties: "Order");
@@ -120,6 +120,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             {
                 var paymentFromDb = _unitOfWork.Payment.Get(p => p.PaymentId == paymentId);
                 _unitOfWork.Payment.Remove(paymentFromDb);
+                _unitOfWork.Save();
                 return true;
             }
             catch (Exception)
@@ -128,7 +129,7 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
             }
         }
 
-        public async Task<bool> UpdatePaymentAsync(UpdatePaymentModel model)
+        public async Task<Payment> UpdatePaymentAsync(UpdatePaymentModel model)
         {
             try
             {
@@ -142,11 +143,11 @@ namespace SimpleE_commerceAPI.Infrastructure.Implementations
 
                 _unitOfWork.Payment.Update(paymentFromDb);
                 _unitOfWork.Save();
-                return true;
+                return paymentFromDb;
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
         }
     }
